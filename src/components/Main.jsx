@@ -2,31 +2,40 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faWrench } from '@fortawesome/free-solid-svg-icons'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Card from "./Card/Card"
 import initialPosts from "../posts"
 import ModifyForm from './ModifyForm/ModifyForm'
 const initialFormData = {
-    id: Date.now(),
     title: '',
     image: '',
     content: '',
     tags: [],
     published: true,
 }
+
 function Main() {
     const [posts, setPosts] = useState(initialPosts)
     const [formData, setFormData] = useState(initialFormData)
     function handlerFormData(e) {
+        const value =
+            e.target.type === "checkbox" ?
+                e.target.checked : e.target.value
+
         setFormData((formData) => ({
-            ...formData, [e.target.name]: e.target.value
+            ...formData,
+            [e.target.name]: value
         }))
     }
+    useEffect(() => {
+        alert('change')
+    }, [formData.published])
     function addPost(event) {
         event.preventDefault()
 
 
-        setPosts([...posts, formData])
+        setPosts([...posts, { id: Date.now(), ...formData }])
+        setFormData(initialFormData)
 
 
     }
@@ -59,9 +68,15 @@ function Main() {
         <main>
             <div className="container">
                 <form onSubmit={addPost} action="" className="form">
-                    <input onChange={handlerFormData} type="text" name='title' placeholder="inserisci titolo" value={formData.name} />
+                    <input onChange={handlerFormData} type="text" name='title' placeholder="inserisci titolo" value={formData.title} />
                     <input onChange={handlerFormData} type="text" name='image' placeholder="inserisci percorso immagine" value={formData.image} />
-
+                    <input onChange={handlerFormData} type="text" name='content' placeholder="inserisci percorso immagine" value={formData.content} />
+                    {/* <input onChange={handlerFormData} name='tags' type="checkbox" value="html" />
+                    <label> html</label>
+                    <input onChange={handlerFormData} name='tags' type="checkbox" value="css" />
+                    <label > css</label> */}
+                    <input onChange={handlerFormData} checked={formData.published} name='published' id='published' type="checkbox" />
+                    <label htmlFor='published' >Pubblica</label>
 
                     <input type="submit" value="aggiungi" />
                 </form>
