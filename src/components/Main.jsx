@@ -6,40 +6,28 @@ import { useState } from "react"
 import Card from "./Card/Card"
 import initialPosts from "../posts"
 import ModifyForm from './ModifyForm/ModifyForm'
-
+const initialFormData = {
+    id: Date.now(),
+    title: '',
+    image: '',
+    content: '',
+    tags: [],
+    published: true,
+}
 function Main() {
     const [posts, setPosts] = useState(initialPosts)
-    const [newTitlePost, setNewTitlePost] = useState('')
-    const [newContentPost, setNewContentPost] = useState('')
-    const [newTags, setNewTags] = useState([])
-    const check = (event) => {
-
-        if (event.target.checked) {
-            setNewTags([...newTags, event.target.value])
-            console.log(newTags)
-        } else {
-            setNewTags([])
-        }
-
-    };
+    const [formData, setFormData] = useState(initialFormData)
+    function handlerFormData(e) {
+        setFormData((formData) => ({
+            ...formData, [e.target.name]: e.target.value
+        }))
+    }
     function addPost(event) {
         event.preventDefault()
-        if (!newTitlePost) {
-            return
-        }
-        const newPost =
-        {
-            id: Date.now(),
-            title: newTitlePost,
-            image: 'https://picsum.photos/200/300',
-            content: newContentPost,
-            tags: newTags,
-            published: true,
-        }
-        setPosts([...posts, newPost])
-        setNewTitlePost('')
-        setNewContentPost('')
-        setNewTags([])
+
+
+        setPosts([...posts, formData])
+
 
     }
 
@@ -71,16 +59,10 @@ function Main() {
         <main>
             <div className="container">
                 <form onSubmit={addPost} action="" className="form">
-                    <input onChange={(e) => setNewTitlePost(e.target.value)} type="text" placeholder="inserisci titolo" value={newTitlePost} />
-                    <input onChange={(e) => setNewContentPost(e.target.value)} type="text" placeholder="inserisci contenuto" value={newContentPost} />
-                    <input onChange={check} type="checkbox" value="html" />
-                    <label> html</label>
-                    <input onChange={check} type="checkbox" value="css" />
-                    <label > css</label>
-                    <input onChange={check} type="checkbox" value="js" />
-                    <label > js</label>
-                    <input onChange={check} type="checkbox" value="php" />
-                    <label > php</label>
+                    <input onChange={handlerFormData} type="text" name='title' placeholder="inserisci titolo" value={formData.name} />
+                    <input onChange={handlerFormData} type="text" name='image' placeholder="inserisci percorso immagine" value={formData.image} />
+
+
                     <input type="submit" value="aggiungi" />
                 </form>
             </div>
