@@ -14,22 +14,37 @@ const initialFormData = {
     published: true,
 }
 
+const allTags = ["html", "css", "js", "php"]
+
 function Main() {
     const [posts, setPosts] = useState(initialPosts)
     const [formData, setFormData] = useState(initialFormData)
+
+
+
+    function handlerTagChange(e) {
+
+        const clickTag = e.target.value
+        setFormData((formData) => ({
+            ...formData,
+            tags: formData.tags.includes(clickTag) ? formData.tags.filter((tag) => tag !== clickTag) : [...formData.tags, clickTag]
+        }))
+    }
+
+
     function handlerFormData(e) {
         const value =
             e.target.type === "checkbox" ?
                 e.target.checked : e.target.value
+
 
         setFormData((formData) => ({
             ...formData,
             [e.target.name]: value
         }))
     }
-    useEffect(() => {
-        alert('change')
-    }, [formData.published])
+
+
     function addPost(event) {
         event.preventDefault()
 
@@ -47,6 +62,10 @@ function Main() {
 
         setPosts(posts.filter(post => post !== postToDelete))
     }
+
+    useEffect(() => {
+        alert('change')
+    }, [formData.published])    // 
 
     const [clickedCardID, setClickedCardID] = useState(0)
     const [modifyMode, setModifyMode] = useState(false)
@@ -71,10 +90,18 @@ function Main() {
                     <input onChange={handlerFormData} type="text" name='title' placeholder="inserisci titolo" value={formData.title} />
                     <input onChange={handlerFormData} type="text" name='image' placeholder="inserisci percorso immagine" value={formData.image} />
                     <input onChange={handlerFormData} type="text" name='content' placeholder="inserisci percorso immagine" value={formData.content} />
-                    {/* <input onChange={handlerFormData} name='tags' type="checkbox" value="html" />
-                    <label> html</label>
-                    <input onChange={handlerFormData} name='tags' type="checkbox" value="css" />
-                    <label > css</label> */}
+
+                    {
+                        allTags.map((tag, i) => {
+                            return (
+                                <span>
+                                    <input type="checkbox" name="tags" id={`tag-${i}`} onChange={handlerTagChange} value={tag} />
+                                    <label htmlFor={`tag-${i}`}>{tag}</label>
+                                </span>
+                            )
+                        })
+                    }
+
                     <input onChange={handlerFormData} checked={formData.published} name='published' id='published' type="checkbox" />
                     <label htmlFor='published' >Pubblica</label>
 

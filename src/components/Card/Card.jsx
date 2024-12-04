@@ -16,8 +16,8 @@ function Card({ props, }) {
                 <h3 className={style.title}>{title}</h3>
 
 
-                <div className={style.tagSection}> {tags.map(tag =>
-                    <span key={tag} className={style[tag]}>{tag}</span>
+                <div className={style.tagSection}> {tags.map((tag, i) =>
+                    <span key={i} className={style[tag]}>{tag}</span>
                 )}
                 </div>
 
