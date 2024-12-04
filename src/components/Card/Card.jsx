@@ -4,7 +4,7 @@ const placeHolderImage = "https://placehold.co/600x400"
 
 
 function Card({ props, }) {
-    const { title, image, content, tags } = props;
+    const { title, image, content, tags, category } = props;
 
 
     return (
@@ -14,6 +14,7 @@ function Card({ props, }) {
             </div>
             <div className={style.body}>
                 <h3 className={style.title}>{title}</h3>
+                <div>{category}</div>
 
 
                 <div className={style.tagSection}> {tags.map((tag, i) =>

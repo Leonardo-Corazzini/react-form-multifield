@@ -11,6 +11,7 @@ const initialFormData = {
     image: '',
     content: '',
     tags: [],
+    category: '',
     published: true,
 }
 
@@ -63,9 +64,9 @@ function Main() {
         setPosts(posts.filter(post => post !== postToDelete))
     }
 
-    useEffect(() => {
-        alert('change')
-    }, [formData.published])    // 
+    // useEffect(() => {
+    //     alert('change')
+    // }, [formData.published])    // 
 
     const [clickedCardID, setClickedCardID] = useState(0)
     const [modifyMode, setModifyMode] = useState(false)
@@ -89,13 +90,18 @@ function Main() {
                 <form onSubmit={addPost} action="" className="form">
                     <input onChange={handlerFormData} type="text" name='title' placeholder="inserisci titolo" value={formData.title} />
                     <input onChange={handlerFormData} type="text" name='image' placeholder="inserisci percorso immagine" value={formData.image} />
-                    <input onChange={handlerFormData} type="text" name='content' placeholder="inserisci percorso immagine" value={formData.content} />
-
+                    <input onChange={handlerFormData} type="text" name='content' placeholder="inserisci contenuto" value={formData.content} />
+                    <label htmlFor="category"></label>
+                    <select value={formData === ""} onChange={handlerFormData} name="category" id="category">
+                        <option value="">Scegli la categoria</option>
+                        <option value="Categoria 1">Categoria 1</option>
+                        <option value="Categoria 2">Categoria 2</option>
+                    </select>
                     {
                         allTags.map((tag, i) => {
                             return (
                                 <span>
-                                    <input type="checkbox" name="tags" id={`tag-${i}`} onChange={handlerTagChange} value={tag} />
+                                    <input type="checkbox" name="tags" id={`tag-${i}`} key={`tag-${i}`} onChange={handlerTagChange} value={tag} />
                                     <label htmlFor={`tag-${i}`}>{tag}</label>
                                 </span>
                             )
